@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="login-container">
+    <!-- Título -->
+    <h1>
+      <span style="color: #8e89bf;">M</span>aps
+    </h1>
+
+    <!-- Subtítulo -->
+    <p>¡Listos para comenzar tu recorrido!</p>
+
+    <!-- Descripción -->
+    <p>La forma más simple de orientarte en Duoc UC</p>
+
+    <!-- Botón Iniciar sesión -->
+    <ion-button 
+      expand="block" 
+      style="--background: #543385; --border-radius: 20px; margin: 20px 0; width: 90%; max-width: 300px; --color: #ffffff;"
+      routerLink="/login-form"
+    >
+      INICIAR SESIÓN
+    </ion-button>
+
+    <!-- Botón No conozco mi cuenta -->
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      style="--border-radius: 20px; margin: 10px 0; --border-color: #543385; --color: #543385; width: 90%; max-width: 300px;"
+      (click)="noConozcoMiCuenta()"
+    >
+      NO CONOZCO MI CUENTA
+    </ion-button>
+
+    <!-- Texto pequeño -->
+    <p class="small-text">
+      La cuenta y contraseña Duoc son enviados al correo electrónico personal registrado en el proceso de admisión. Revisa tu bandeja de entrada o en la sección de spam.
+    </p>
+
+    <!-- Versión -->
+    <p class="version">V. 1.0</p>
+  </div>
+
+  <!-- Botón de Modo Voz con tu imagen -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
+  <ion-button 
+    fill="solid"
+    style="--background: #543385; --border-radius: 20px; width: auto; padding: 0 16px; height: 40px; color: white; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.85rem;"
+    (click)="alertaModoVoz()"
+  >
+    <img src="assets/volumen.png" alt="Altavoz" style="width: 20px; height: 20px; margin-right: 8px;">
+    Modo Voz
+  </ion-button>
+</div>
+
+</ion-content>
+ 

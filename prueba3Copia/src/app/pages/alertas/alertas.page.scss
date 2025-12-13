@@ -1,0 +1,126 @@
+ion-content {
+  --background: #f9f5ff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.alert-card {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+}
+
+.alert-text {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #2c1f32;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0 0 0;
+  }
+}
+
+// Panel de información
+.info-panel {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-top: 20px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+
+  &.expanded {
+    max-height: 500px; /* Ajusta según necesidad */
+  }
+
+  .info-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    cursor: pointer;
+    background: #f9f5ff;
+    border-bottom: 1px solid #eee;
+
+    ion-icon {
+      font-size: 1.2rem;
+      color: #8e6fa9;
+      margin-right: 10px;
+    }
+
+    span {
+      font-weight: 600;
+      color: #2c1f32;
+    }
+
+    ion-icon:last-child {
+      margin-left: auto;
+      font-size: 1.2rem;
+      color: #8e6fa9;
+    }
+  }
+
+  .info-content {
+    padding: 15px 20px;
+    background: white;
+    animation: fadeIn 0.3s ease-in;
+
+    p {
+      font-size: 0.95rem;
+      color: #666;
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Estilo del botón Inicio
+ion-button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}

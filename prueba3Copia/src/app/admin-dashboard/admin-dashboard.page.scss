@@ -1,0 +1,45 @@
+ion-content {
+  --background: #000;
+  color: white;
+}
+
+ion-card {
+  background-color: #111;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+ion-card-title {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: white;
+}
+
+ion-card-content h1 {
+  color: #3498db;
+  font-size: 2.2em;
+  margin: 0;
+}
+
+ion-item {
+  --background: transparent;
+  --border-color: rgba(255,255,255,0.1);
+  padding: 12px 0;
+}
+
+ion-label {
+  font-size: 1.1em;
+  color: white;
+}
+
+ion-badge {
+  font-size: 0.9em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+ion-button {
+  margin-top: 24px;
+  border-radius: 8px;
+  font-weight: bold;
+}

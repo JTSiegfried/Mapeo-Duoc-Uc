@@ -1,0 +1,47 @@
+<ion-content>
+  <div class="login-container">
+    <h2 style="font-weight: 800; color: #2c1f32; margin-bottom: 60px; font-size: 3.0rem;">Iniciar Sesión</h2>
+
+    <ion-item lines="full" style="width: 90%; max-width: 300px; margin-bottom: 15px;">
+      <ion-label position="stacked" style="color: #2c1f32; font-weight: 600;">Correo institucional</ion-label>
+      <ion-input 
+        type="email" 
+        placeholder="nombre.apellido@duocuc.cl" 
+        [(ngModel)]="correo"
+        style="font-family: 'Poppins', sans-serif;"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Mensaje de error (solo si correo es inválido) -->
+    <div *ngIf="correo && !esCorreoValido()" class="error-message">
+      Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl
+    </div>
+
+    <ion-item lines="full" style="width: 90%; max-width: 300px; margin-bottom: 20px;">
+      <ion-label position="stacked" style="color: #2c1f32; font-weight: 600;">Contraseña</ion-label>
+      <ion-input 
+        type="password" 
+        placeholder="••••••••" 
+        [(ngModel)]="contrasena"
+        style="font-family: 'Poppins', sans-serif;"
+      ></ion-input>
+    </ion-item>
+
+    <ion-button 
+      expand="block" 
+      style="--background: #543385; --border-radius: 20px; margin: 10px 0; width: 90%; max-width: 300px; color: #ffffff;"
+      (click)="onSubmit()"
+    >
+      ENTRAR
+    </ion-button>
+
+    <ion-button 
+      fill="clear" 
+      color="medium" 
+      routerLink="/login"
+      style="font-family: 'Poppins', sans-serif; font-weight: 600;"
+    >
+      ← Volver
+    </ion-button>
+  </div>
+</ion-content>

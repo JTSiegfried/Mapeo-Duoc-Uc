@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>
+      <ion-icon name="lock-closed"></ion-icon>
+      Panel de Administración
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Gráfico: Rutas por Día -->
+  <ion-card *ngIf="datosCargados">
+    <ion-card-header>
+      <ion-card-title>Rutas Por Día</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div style="height: 300px;">
+        <apx-chart
+          [series]="[{ name: 'Rutas', data: diasData }]"
+          [chart]="{ type: 'bar', height: 300, background: '#111' }"
+          [xaxis]="{ categories: diasLabels, labels: { style: { colors: '#fff' } } }"
+          [yaxis]="{ labels: { style: { colors: '#fff' } } }"
+          [theme]="{ mode: 'dark' }"
+          [plotOptions]="{ bar: { borderRadius: 4 } }">
+        </apx-chart>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Gráfico: Rutas por Hora -->
+  <ion-card *ngIf="datosCargados">
+    <ion-card-header>
+      <ion-card-title>Rutas Por Hora (8 AM – 10 PM)</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div style="height: 300px;">
+        <apx-chart
+          [series]="[{ name: 'Rutas', data: horasData }]"
+          [chart]="{ type: 'line', height: 300, background: '#111' }"
+          [xaxis]="{ categories: horasLabels, labels: { style: { colors: '#fff' } } }"
+          [yaxis]="{ labels: { style: { colors: '#fff' } } }"
+          [theme]="{ mode: 'dark' }"
+          [stroke]="{ curve: 'smooth', width: 3 }">
+        </apx-chart>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- ✅ NUEVO: Gráfico de Orígenes Más Usados (reemplaza la lista) -->
+  <ion-card *ngIf="datosCargados">
+    <ion-card-header>
+      <ion-card-title>Salas Con Mas Origen</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="origenesData.length > 0; else noOrigenesData" style="height: 300px;">
+        <apx-chart
+          [series]="[{ name: 'Usos', data: origenesData }]"
+          [chart]="{ type: 'bar', height: 300, background: '#111' }"
+          [xaxis]="{ categories: origenesLabels, labels: { style: { colors: '#fff' } } }"
+          [yaxis]="{ labels: { style: { colors: '#fff' } } }"
+          [theme]="{ mode: 'dark' }"
+          [plotOptions]="{ bar: { borderRadius: 4, horizontal: false } }"
+          [dataLabels]="{ enabled: false }">
+        </apx-chart>
+      </div>
+      <ng-template #noOrigenesData>
+        <ion-label>No hay datos de orígenes</ion-label>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Gráfico: Salas Más Buscadas -->
+  <ion-card *ngIf="datosCargados">
+    <ion-card-header>
+      <ion-card-title>Salas Con Mas Destinos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="salaMasBuscadasData.length > 0; else noSalasData" style="height: 300px;">
+        <apx-chart
+          [series]="[{ name: 'Búsquedas', data: salaMasBuscadasData }]"
+          [chart]="{ type: 'bar', height: 300, background: '#111' }"
+          [xaxis]="{ categories: salaMasBuscadasLabels, labels: { style: { colors: '#fff' } } }"
+          [yaxis]="{ labels: { style: { colors: '#fff' } } }"
+          [theme]="{ mode: 'dark' }"
+          [plotOptions]="{ bar: { borderRadius: 4, horizontal: false } }"
+          [dataLabels]="{ enabled: false }">
+        </apx-chart>
+      </div>
+      <ng-template #noSalasData>
+        <ion-label>No hay datos de salas</ion-label>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button color="danger" expand="block" (click)="lanzarAlertaEmergencia()">
+    <ion-icon name="warning-outline"></ion-icon>
+    Lanzar Alerta de Emergencia
+  </ion-button>
+
+  <ion-button expand="block" (click)="volver()">← Volver al Login</ion-button>
+
+</ion-content>

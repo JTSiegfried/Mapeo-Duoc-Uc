@@ -1,0 +1,162 @@
+<ion-header style="background-color: #8e6fa9; --border-color: transparent;">
+  <ion-toolbar style="background-color: #8e6fa9; --border-color: transparent; height: 80px; display: flex; align-items: center; padding: 0 10px;">
+    <ion-buttons slot="start">
+      <ion-avatar style="width: 50px; height: 50px; background-color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #8e6fa9; font-size: 1.2rem; margin-left: 10px;">
+        AA
+      </ion-avatar>
+    </ion-buttons>
+
+    <ion-title style="color: white; font-family: 'Poppins', sans-serif; font-weight: 600; margin-left: 10px; font-size: 1.1rem;">
+      Hola Angiella Albornoz
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <img 
+        src="assets/logout.png" 
+        alt="Cerrar sesión" 
+        style="width: 24px; height: 24px; margin-right: 10px; cursor: pointer;" 
+        (click)="cerrarSesion()"
+      />
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #ffffff; padding: 0;">
+
+  <!-- PERFIL DEL USUARIO -->
+  <div style="background-color: white; padding: 10px; text-align: center; font-family: 'Poppins', sans-serif; font-weight: 500; color: #666; margin: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    Ingeniería en Informática
+    <br>
+    <span style="font-size: 0.8rem; color: #999999;">Alumno</span>
+  </div>
+
+  <!-- SELECTOR DE PISO -->
+  <ion-segment [(ngModel)]="pisoSeleccionado" (ionChange)="cambiarPiso()" style="margin: 0 10px; --background: #8e6fa9; --color: white;">
+    <ion-segment-button value="piso1" style="--background: #8e6fa9; --color: white; --border-color: #ffffff33;">
+      <ion-label>Piso 1</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="piso2" style="--background: #8e6fa9; --color: white; --border-color: #ffffff33;">
+      <ion-label>Piso 2</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="piso3" style="--background: #8e6fa9; --color: white; --border-color: #ffffff33;">
+      <ion-label>Piso 3</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Campo: Estás en -->
+  <ion-item lines="full" style="margin: 16px 16px 0 16px; border-radius: 8px; --background: #8e6fa944; --color: #ffffff;">
+    <ion-icon name="location-outline" slot="start" style="color: #8e6fa9;"></ion-icon>
+    <ion-label position="stacked" style="color: #2c1f32; font-weight: 600;">Estás en:</ion-label>
+    <ion-input
+      [(ngModel)]="currentLocation"
+      (ionInput)="onCurrentLocationInput($event)"
+      placeholder="Selecciona tu ubicación"
+      style="font-weight: 500; color: #2c1f32;"
+    ></ion-input>
+  </ion-item>
+
+  <ion-list *ngIf="filteredCurrentPlaces.length > 0 && currentLocation.trim()" class="suggestions-list">
+    <ion-item button *ngFor="let place of filteredCurrentPlaces" (click)="selectCurrentLocation(place)">
+      <ion-label>{{ place.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Campo: Vas a -->
+  <ion-item lines="full" style="margin: 16px 16px 0 16px; border-radius: 8px; --background: #8e6fa944; --color: white;">
+    <ion-icon name="navigate-outline" slot="start" style="color: white;"></ion-icon>
+    <ion-label position="stacked" style="color: #2c1f32; font-weight: 600;">Vas a:</ion-label>
+    <ion-input
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchInput($event)"
+      placeholder="Buscar destino..."
+      style="font-weight: 500; color:#2c1f32;"
+    ></ion-input>
+  </ion-item>
+
+  <ion-list *ngIf="filteredPlaces.length > 0 && searchQuery.trim()" class="suggestions-list">
+    <ion-item button *ngFor="let place of filteredPlaces" (click)="selectDestination(place)">
+      <ion-label>{{ place.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Mapa con marcadores y ruta animada -->
+  <div style="width: 100%; height: 55vh; display: flex; align-items: center; justify-content: center; border-radius: 0; overflow: hidden; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; padding: 0; margin: 0;">
+    <img 
+      [src]="getMapImage()"
+      alt="Plano del piso"
+      style="width: 100%; height: 100%; object-fit: contain; position: relative;"
+      id="mapImage"
+    />
+
+    <!-- Marcador para "Estás en:" -->
+    <div 
+      *ngIf="currentLocation && getSalaCoordinates()[currentLocation.toLowerCase()]"
+      class="location-marker current-location-marker"
+      [style.left.px]="getSalaCoordinates()[currentLocation.toLowerCase()].x"
+      [style.top.px]="getSalaCoordinates()[currentLocation.toLowerCase()].y"
+    >
+    </div>
+
+    <!-- Marcador PNG para "Vas a:" -->
+    <img 
+      *ngIf="selectedDestination && getSalaCoordinates()[selectedDestination.toLowerCase()]"
+      src="assets/destino.png" 
+      alt="" 
+      class="destination-pin"
+      [style.left.px]="getSalaCoordinates()[selectedDestination.toLowerCase()].x"
+      [style.top.px]="getSalaCoordinates()[selectedDestination.toLowerCase()].y"
+    />
+
+    <!-- Línea de ruta animada -->
+    <svg 
+      *ngIf="isRouteVisible" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"
+    >
+      <polyline 
+        #routePath
+        [attr.points]="getRoutePath(routePoints)" 
+        fill="none" 
+        stroke="#a945ef"
+        stroke-width="3"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-dasharray="10000, 10000"
+        stroke-dashoffset="10000"
+        [class.route-animated]="isRouteAnimated"
+      />
+    </svg>
+  </div>
+
+  <!-- INSTRUCCIONES DE NAVEGACIÓN CON BOTÓN DE VOZ -->
+  <div *ngIf="navigationInstructions.length > 0" class="instructions-box">
+    <div class="instruction-step" *ngFor="let step of navigationInstructions; let i = index">
+      <span class="step-number">{{ i + 1 }}.</span>
+      <span class="step-text">{{ step }}</span>
+    </div>
+
+    <!-- Botón "Escuchar ruta" con estilo consistente -->
+<ion-button 
+  fill="solid"
+  style="--background: #543385; --border-radius: 20px; width: 90%; max-width: 300px; color: white; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.9rem; margin: 10px auto 0 auto; display: block;"
+  (click)="hablarInstrucciones(navigationInstructions)"
+>
+  <img src="assets/volumen.png" alt="Altavoz" style="width: 20px; height: 20px; margin-right: 8px;">
+  Escuchar ruta
+</ion-button>
+
+  </div>
+</ion-content>
+
+<ion-footer style="background: white; border-top: 1px solid #eee;">
+  <div style="display: flex; justify-content: center; padding: 16px 0;">
+    <div style="text-align: center; margin-top: 40px;">
+    <ion-button 
+      fill="solid"
+      style="--background: #543385; --border-radius: 20px; width: 90%; max-width: 300px; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;"
+      (click)="irAlertas()"
+    >
+      ALERTAS
+    </ion-button>
+  </div>
+  </div>
+</ion-footer>ion-content 
